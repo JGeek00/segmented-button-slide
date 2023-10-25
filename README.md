@@ -15,6 +15,7 @@ flutter pub add segmented_button_slide
 ```
 
 #### Full example
+By default it takes as much width as it can, so it's a good idea to wrap it inside a widget with a defined width.
 
 ```dart
 int selectedOption = 0;
