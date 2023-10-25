@@ -41,7 +41,7 @@ class _SegmentedButtonDemoState extends State<SegmentedButtonDemo> {
               ),
               slideShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(1),
+                  color: Colors.blue.withOpacity(1),
                   blurRadius: 5,
                   spreadRadius: 1
                 )

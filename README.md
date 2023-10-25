@@ -1,39 +1,69 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Segmented Button Slide
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+<div align="center" style="height: 100px">
+  <img src="assets/demo.gif" alt="Segmented Button Slide demo" />
+</div>
+<br>
+<br>
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+Segmented Button Slide takes inspiration from the iOS segmented button, adapting it to the Material interface.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+### How to use it
+Install it by running the following command.
+```
+flutter pub add segmented_button_slide
 ```
 
-## Additional information
+#### Full example
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```dart
+int selectedOption = 0;
+
+...
+
+SegmentedButtonSlide(
+  entries: const [
+    SegmentedButtonSlideEntry(icon: Icons.home_rounded, label: "Home"),
+    SegmentedButtonSlideEntry(icon: Icons.list_rounded, label: "List"),
+    SegmentedButtonSlideEntry(icon: Icons.settings_rounded, label: "Settings"),
+  ], 
+  selectedEntry: selectedOption, 
+  onChange: (selected) => setState(() => selectedOption = selected),
+  colors: SegmentedButtonSlideColors(
+    barColor: Colors.grey.withOpacity(0.2),
+    backgroundSelectedColor: Colors.grey, 
+    foregroundSelectedColor: Colors.white, 
+    foregroundUnselectedColor: Colors.black, 
+    hoverColor: Colors.grey.withOpacity(0.8)
+  ),
+  slideShadow: [
+    BoxShadow(
+      color: Colors.grey,
+      blurRadius: 5,
+      spreadRadius: 1
+    )
+  ],
+  margin: const EdgeInsets.all(16),
+  height: 70,
+)
+```
+
+#### Detailed explanation
+* **[REQUIRED] ``entries``** accepts a list of ``SegmentedButtonSlideEntry``. Each ``SegmentedButtonSlideEntry`` is formed by an icon and a label. You must declare at least one of the two.
+* **[REQUIRED] ``selectedEntry``** accepts an ``int``. Defines the item that's currently selected.
+* **[REQUIRED] ``onChange``** returns the selected value when the user changes the selection.
+* **[REQUIRED] ``colors``** accepts an instance of ``SegmentedButtonSlideColors``. All of it's attributes are mandatory. 
+  * ``barColor`` defines the background color of the full bar.
+  * ``backgroundSelectedColor`` defines the background color of the item that's currently selected.
+  * ``foregroundSelectedColor`` defines the color of the icon and text of the item that's currently selected.
+  * ``foregroundUnselectedColor`` defines the color of the icon and text of the items that aren't selected.
+  * ``hoverColor`` defines the color of the icon and text when the mouse is over that entry.
+* **``slideShadow``** defines the boxShadow of the slider (item that's currently selected).
+* **``barShadow``** defines the boxShadow of the full bar (the background).
+* **``margin``** creates a margin around the whole widget.
+* **``height``** defines the height of the widget.
+* **``fontSize``** sets the fontSize of the text. It doesn't affect to the icon.
+* **``iconSize``** sets the size of the icon. It doesn't affect to the text.
+* **``textOverflow``** defines how the text (only) should overflow.
+* **``animationDuration``** defines the duration of all the animations of the widget. By default it's set to 250 milliseconds.
+* **``curve``** defines the curve of all the animations of the widget. By default it's set to ``ease``.
