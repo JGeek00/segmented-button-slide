@@ -1,7 +1,7 @@
 name: segmented_button_slide
 description: Segmented button with slider indicator.
-version: 0.0.1
-homepage:
+version: 1.0.0
+homepage: https://github.com/JGeek00/segmented-button-slide
 
 environment:
   sdk: '>=3.1.4 <4.0.0'
