@@ -43,22 +43,21 @@ class SegmentedButtonSlide extends StatelessWidget {
   final double? iconSize;
   final TextOverflow textOverflow;
 
-  const SegmentedButtonSlide({
-    super.key,
-    required this.entries,
-    required this.selectedEntry,
-    required this.onChange,
-    required this.colors,
-    this.animationDuration = const Duration(milliseconds: 250),
-    this.curve = Curves.ease,
-    this.slideShadow,
-    this.barShadow,
-    this.margin,
-    this.height = 50,
-    this.fontSize,
-    this.iconSize,
-    this.textOverflow = TextOverflow.clip
-  });
+  const SegmentedButtonSlide(
+      {super.key,
+      required this.entries,
+      required this.selectedEntry,
+      required this.onChange,
+      required this.colors,
+      this.animationDuration = const Duration(milliseconds: 250),
+      this.curve = Curves.ease,
+      this.slideShadow,
+      this.barShadow,
+      this.margin,
+      this.height = 50,
+      this.fontSize,
+      this.iconSize,
+      this.textOverflow = TextOverflow.clip});
 
   @override
   Widget build(BuildContext context) {
@@ -68,44 +67,44 @@ class SegmentedButtonSlide extends StatelessWidget {
         child: Container(
           margin: margin,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(height),
-            color: colors.barColor,
-            boxShadow: barShadow
-          ),
+              borderRadius: BorderRadius.circular(height),
+              color: colors.barColor,
+              boxShadow: barShadow),
           child: LayoutBuilder(
             builder: (context, constraints) => Stack(
               children: [
                 AnimatedPositioned(
                   duration: animationDuration,
                   curve: curve,
-                  left: (constraints.maxWidth / entries.length) * (selectedEntry),
+                  left:
+                      (constraints.maxWidth / entries.length) * (selectedEntry),
                   child: Container(
                     height: height,
                     width: constraints.maxWidth / entries.length,
                     decoration: BoxDecoration(
-                      color: colors.backgroundSelectedColor,
-                      borderRadius: BorderRadius.circular(height),
-                      boxShadow: slideShadow
-                    ),
+                        color: colors.backgroundSelectedColor,
+                        borderRadius: BorderRadius.circular(height),
+                        boxShadow: slideShadow),
                   ),
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: entries.asMap().entries.map(
-                    (e) => _ButtonEntry(
-                      index: e.key, 
-                      entry: e.value, 
-                      onSelect: onChange, 
-                      isSelected: e.key == selectedEntry,
-                      colors: colors,
-                      animationDuration: animationDuration,
-                      height: height,
-                      curve: curve,
-                      fontSize: fontSize,
-                      iconSize: iconSize,
-                      textOverflow: textOverflow
-                    )
-                  ).toList(),
+                  children: entries
+                      .asMap()
+                      .entries
+                      .map((e) => _ButtonEntry(
+                          index: e.key,
+                          entry: e.value,
+                          onSelect: onChange,
+                          isSelected: e.key == selectedEntry,
+                          colors: colors,
+                          animationDuration: animationDuration,
+                          height: height,
+                          curve: curve,
+                          fontSize: fontSize,
+                          iconSize: iconSize,
+                          textOverflow: textOverflow))
+                      .toList(),
                 ),
               ],
             ),
@@ -147,7 +146,8 @@ class _ButtonEntry extends StatefulWidget {
   State<_ButtonEntry> createState() => _ButtonEntryState();
 }
 
-class _ButtonEntryState extends State<_ButtonEntry> with SingleTickerProviderStateMixin {
+class _ButtonEntryState extends State<_ButtonEntry>
+    with SingleTickerProviderStateMixin {
   bool _hover = false;
 
   @override
@@ -172,39 +172,42 @@ class _ButtonEntryState extends State<_ButtonEntry> with SingleTickerProviderSta
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.entry.icon != null) _AnimatedIcon(
-                    icon: widget.entry.icon!, 
-                    activeColor: widget.colors.foregroundSelectedColor, 
-                    normalColor: widget.colors.foregroundUnselectedColor, 
-                    hoverColor: widget.colors.hoverColor, 
-                    isActive: widget.isSelected, 
-                    isHover: _hover,
-                    size: widget.iconSize,
-                    duration: widget.animationDuration,
-                    curve: widget.curve,
-                  ),
-                  if (widget.entry.label != null && widget.entry.icon != null) const SizedBox(width: 12),
-                  if (widget.entry.label != null) AnimatedDefaultTextStyle(
-                    duration: widget.animationDuration,
-                    curve: widget.curve,
-                    style: TextStyle(
-                      color: widget.isSelected
-                        ? widget.colors.foregroundSelectedColor
-                        : _hover
-                          ? widget.colors.hoverColor
-                          : widget.colors.foregroundUnselectedColor,
-                      fontWeight: widget.isSelected
-                        ? FontWeight.w600
-                        : FontWeight.w400,
-                      fontSize: widget.fontSize,
+                  if (widget.entry.icon != null)
+                    _AnimatedIcon(
+                      icon: widget.entry.icon!,
+                      activeColor: widget.colors.foregroundSelectedColor,
+                      normalColor: widget.colors.foregroundUnselectedColor,
+                      hoverColor: widget.colors.hoverColor,
+                      isActive: widget.isSelected,
+                      isHover: _hover,
+                      size: widget.iconSize,
+                      duration: widget.animationDuration,
+                      curve: widget.curve,
                     ),
-                    child: Flexible(
-                      child: Text(
-                        widget.entry.label!,
-                        overflow: widget.textOverflow,
+                  if (widget.entry.label != null && widget.entry.icon != null)
+                    const SizedBox(width: 12),
+                  if (widget.entry.label != null)
+                    AnimatedDefaultTextStyle(
+                      duration: widget.animationDuration,
+                      curve: widget.curve,
+                      style: TextStyle(
+                        color: widget.isSelected
+                            ? widget.colors.foregroundSelectedColor
+                            : _hover
+                                ? widget.colors.hoverColor
+                                : widget.colors.foregroundUnselectedColor,
+                        fontWeight: widget.isSelected
+                            ? FontWeight.w600
+                            : FontWeight.w400,
+                        fontSize: widget.fontSize,
                       ),
-                    ),
-                  )
+                      child: Flexible(
+                        child: Text(
+                          widget.entry.label!,
+                          overflow: widget.textOverflow,
+                        ),
+                      ),
+                    )
                 ],
               ),
             ),
@@ -228,7 +231,7 @@ class _AnimatedIcon extends StatefulWidget {
 
   const _AnimatedIcon({
     Key? key,
-    required this.icon, 
+    required this.icon,
     required this.activeColor,
     required this.normalColor,
     required this.hoverColor,
@@ -243,7 +246,8 @@ class _AnimatedIcon extends StatefulWidget {
   State<_AnimatedIcon> createState() => _AnimatedIconState();
 }
 
-class _AnimatedIconState extends State<_AnimatedIcon> with TickerProviderStateMixin {
+class _AnimatedIconState extends State<_AnimatedIcon>
+    with TickerProviderStateMixin {
   late AnimationController _activeController;
   late AnimationController _hoverController;
   late Animation<Color?> _activeAnimation;
@@ -260,9 +264,8 @@ class _AnimatedIconState extends State<_AnimatedIcon> with TickerProviderStateMi
     _activeAnimation = ColorTween(
       begin: widget.normalColor,
       end: widget.activeColor,
-    ).animate(
-      CurvedAnimation(parent: _activeController, curve: widget.curve)
-    )..addListener(() => setState(() => {}));
+    ).animate(CurvedAnimation(parent: _activeController, curve: widget.curve))
+      ..addListener(() => setState(() => {}));
 
     _hoverController = AnimationController(
       duration: widget.duration,
@@ -271,38 +274,35 @@ class _AnimatedIconState extends State<_AnimatedIcon> with TickerProviderStateMi
     _hoverAnimation = ColorTween(
       begin: widget.normalColor,
       end: widget.hoverColor,
-    ).animate(
-      CurvedAnimation(parent: _hoverController, curve: widget.curve)
-    )..addListener(() => setState(() => {}));
+    ).animate(CurvedAnimation(parent: _hoverController, curve: widget.curve))
+      ..addListener(() => setState(() => {}));
   }
 
   @override
   Widget build(BuildContext context) {
     if (widget.isActive) {
       _activeController.forward();
-    }
-    else {
+    } else {
       _activeController.reverse();
     }
 
     if (widget.isHover && !widget.isActive) {
       _hoverController.forward();
-    }
-    else {
+    } else {
       _hoverController.reverse();
     }
 
     return Icon(
       widget.icon,
-      color: _activeController.isAnimating  
-        ? _activeAnimation.value 
-        : _hoverController.isAnimating
-          ? _hoverAnimation.value
-          : widget.isActive 
-            ? widget.activeColor
-            : widget.isHover 
-              ? widget.hoverColor
-              : widget.normalColor,
+      color: _activeController.isAnimating
+          ? _activeAnimation.value
+          : _hoverController.isAnimating
+              ? _hoverAnimation.value
+              : widget.isActive
+                  ? widget.activeColor
+                  : widget.isHover
+                      ? widget.hoverColor
+                      : widget.normalColor,
       size: widget.size,
     );
   }

@@ -1,7 +1,7 @@
 # Segmented Button Slide
 
 <div align="center" style="height: 100px">
-  <img src="assets/demo.gif" alt="Segmented Button Slide demo" />
+  <img src="https://raw.githubusercontent.com/JGeek00/segmented-button-slide/master/assets/demo.gif" alt="Segmented Button Slide demo" />
 </div>
 <br>
 <br>
