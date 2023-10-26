@@ -1,6 +1,6 @@
 name: segmented_button_slide
 description: Segmented button with slider indicator. Based on the iOS segmented button but adapted to the Material UI.
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/JGeek00/segmented-button-slide
 
 environment:

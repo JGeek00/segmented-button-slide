@@ -9,3 +9,6 @@
 
 ### 1.0.3
 * Changed SDK version
+
+### 1.0.4
+* Added documentation

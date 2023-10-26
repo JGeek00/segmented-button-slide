@@ -27,26 +27,33 @@ class _SegmentedButtonDemoState extends State<SegmentedButtonDemo> {
             child: SegmentedButtonSlide(
               entries: const [
                 SegmentedButtonSlideEntry(
-                    icon: Icons.home_rounded, label: "Home"),
+                  icon: Icons.home_rounded,
+                  label: "Home",
+                ),
                 SegmentedButtonSlideEntry(
-                    icon: Icons.list_rounded, label: "List"),
+                  icon: Icons.list_rounded,
+                  label: "List",
+                ),
                 SegmentedButtonSlideEntry(
-                    icon: Icons.settings_rounded, label: "Settings"),
+                  icon: Icons.settings_rounded,
+                  label: "Settings",
+                ),
               ],
               selectedEntry: _selected,
               onChange: (selected) => setState(() => _selected = selected),
               colors: SegmentedButtonSlideColors(
-                  barColor: Theme.of(context)
-                      .colorScheme
-                      .primaryContainer
-                      .withOpacity(0.5),
-                  backgroundSelectedColor:
-                      Theme.of(context).colorScheme.primaryContainer,
-                  foregroundSelectedColor:
-                      Theme.of(context).colorScheme.onPrimaryContainer,
-                  foregroundUnselectedColor:
-                      Theme.of(context).colorScheme.onSurface,
-                  hoverColor: Theme.of(context).colorScheme.onSurfaceVariant),
+                barColor: Theme.of(context)
+                    .colorScheme
+                    .primaryContainer
+                    .withOpacity(0.5),
+                backgroundSelectedColor:
+                    Theme.of(context).colorScheme.primaryContainer,
+                foregroundSelectedColor:
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                foregroundUnselectedColor:
+                    Theme.of(context).colorScheme.onSurface,
+                hoverColor: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
               slideShadow: [
                 BoxShadow(
                   color: Colors.blue.withOpacity(1),

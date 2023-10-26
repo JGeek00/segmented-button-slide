@@ -3,7 +3,10 @@ library segmented_button_slide;
 import 'package:flutter/material.dart';
 
 class SegmentedButtonSlideEntry {
+  /// [icon] defines the icon of the tile
   final IconData? icon;
+
+  /// [icon] defines the label of the tile
   final String? label;
 
   const SegmentedButtonSlideEntry({
@@ -13,10 +16,19 @@ class SegmentedButtonSlideEntry {
 }
 
 class SegmentedButtonSlideColors {
+  /// [barColor] defines the background color of the full bar.
   final Color barColor;
+
+  /// [backgroundSelectedColor] defines the background color of the item that's currently selected.
   final Color backgroundSelectedColor;
+
+  /// [foregroundSelectedColor] defines the color of the icon and text of the item that's currently selected.
   final Color foregroundSelectedColor;
+
+  /// [foregroundUnselectedColor] defines the color of the icon and text of the items that aren't selected.
   final Color foregroundUnselectedColor;
+
+  /// [hoverColor] defines the color of the icon and text when the mouse is over that entry.
   final Color hoverColor;
 
   const SegmentedButtonSlideColors({
@@ -29,35 +41,66 @@ class SegmentedButtonSlideColors {
 }
 
 class SegmentedButtonSlide extends StatelessWidget {
+  /// [entries] accepts a list of SegmentedButtonSlideEntry.
+  /// Each SegmentedButtonSlideEntry is formed by an icon and a label.
+  /// You must declare at least one of the two
   final List<SegmentedButtonSlideEntry> entries;
+
+  /// [selectedEntry] accepts an int. Defines the item that's currently selected.
   final int selectedEntry;
+
+  /// [onChange] returns the selected value when the user changes the selection.
   final void Function(int) onChange;
+
+  /// [colors] accepts an instance of SegmentedButtonSlideColors.
+  /// All of it's attributes are mandatory.
   final SegmentedButtonSlideColors colors;
+
+  /// [animationDuration] defines the duration of all the animations of the widget.
+  /// By default it's set to 250 milliseconds.
   final Duration animationDuration;
+
+  /// [curve] defines the curve of all the animations of the widget.
+  /// By default it's set to ease.
   final Curve curve;
+
+  /// [slideShadow] defines the boxShadow of the slider (item that's currently selected).
   final List<BoxShadow>? slideShadow;
+
+  /// [barShadow] defines the boxShadow of the full bar (the background).
   final List<BoxShadow>? barShadow;
+
+  /// [margin] creates a margin around the whole widget.
   final EdgeInsets? margin;
+
+  /// [height] defines the height of the widget.
   final double height;
+
+  /// [fontSize] sets the fontSize of the text. It doesn't affect to the icon.
   final double? fontSize;
+
+  /// [iconSize] sets the size of the icon. It doesn't affect to the text.
   final double? iconSize;
+
+  /// [textOverflow] defines how the text (only) should overflow.
   final TextOverflow textOverflow;
 
-  const SegmentedButtonSlide(
-      {super.key,
-      required this.entries,
-      required this.selectedEntry,
-      required this.onChange,
-      required this.colors,
-      this.animationDuration = const Duration(milliseconds: 250),
-      this.curve = Curves.ease,
-      this.slideShadow,
-      this.barShadow,
-      this.margin,
-      this.height = 50,
-      this.fontSize,
-      this.iconSize,
-      this.textOverflow = TextOverflow.clip});
+  const SegmentedButtonSlide({
+    super.key,
+    required this.entries,
+    required this.selectedEntry,
+    required this.onChange,
+    required this.colors,
+    this.animationDuration = const Duration(milliseconds: 250),
+    this.curve = Curves.ease,
+    this.slideShadow,
+    this.barShadow,
+    this.margin,
+    this.height = 50,
+    this.fontSize,
+    this.iconSize,
+    this.textOverflow = TextOverflow.clip,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +110,10 @@ class SegmentedButtonSlide extends StatelessWidget {
         child: Container(
           margin: margin,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(height),
-              color: colors.barColor,
-              boxShadow: barShadow),
+            borderRadius: BorderRadius.circular(height),
+            color: colors.barColor,
+            boxShadow: barShadow,
+          ),
           child: LayoutBuilder(
             builder: (context, constraints) => Stack(
               children: [
@@ -82,9 +126,10 @@ class SegmentedButtonSlide extends StatelessWidget {
                     height: height,
                     width: constraints.maxWidth / entries.length,
                     decoration: BoxDecoration(
-                        color: colors.backgroundSelectedColor,
-                        borderRadius: BorderRadius.circular(height),
-                        boxShadow: slideShadow),
+                      color: colors.backgroundSelectedColor,
+                      borderRadius: BorderRadius.circular(height),
+                      boxShadow: slideShadow,
+                    ),
                   ),
                 ),
                 Row(
@@ -92,7 +137,8 @@ class SegmentedButtonSlide extends StatelessWidget {
                   children: entries
                       .asMap()
                       .entries
-                      .map((e) => _ButtonEntry(
+                      .map(
+                        (e) => _ButtonEntry(
                           index: e.key,
                           entry: e.value,
                           onSelect: onChange,
@@ -103,7 +149,9 @@ class SegmentedButtonSlide extends StatelessWidget {
                           curve: curve,
                           fontSize: fontSize,
                           iconSize: iconSize,
-                          textOverflow: textOverflow))
+                          textOverflow: textOverflow,
+                        ),
+                      )
                       .toList(),
                 ),
               ],
