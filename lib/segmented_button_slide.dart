@@ -73,11 +73,20 @@ class SegmentedButtonSlide extends StatelessWidget {
   /// [margin] creates a margin around the whole widget.
   final EdgeInsets? margin;
 
+  /// [padding] creates a padding for entries.
+  final EdgeInsets? padding;
+
+  /// [borderRadius] border radius of the widget and entries.
+  final BorderRadiusGeometry? borderRadius;
+
   /// [height] defines the height of the widget.
   final double height;
 
-  /// [fontSize] sets the fontSize of the text. It doesn't affect to the icon.
-  final double? fontSize;
+  /// [selectedTextStyle] sets the selected text style of the text.
+  final TextStyle? selectedTextStyle;
+
+  /// [unselectedTextStyle] sets the unselected text style of the text.
+  final TextStyle? unselectedTextStyle;
 
   /// [iconSize] sets the size of the icon. It doesn't affect to the text.
   final double? iconSize;
@@ -96,8 +105,11 @@ class SegmentedButtonSlide extends StatelessWidget {
     this.slideShadow,
     this.barShadow,
     this.margin,
+    this.padding,
     this.height = 50,
-    this.fontSize,
+    this.borderRadius,
+    this.selectedTextStyle,
+    this.unselectedTextStyle,
     this.iconSize,
     this.textOverflow = TextOverflow.clip,
   });
@@ -105,12 +117,13 @@ class SegmentedButtonSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(height),
+      borderRadius: borderRadius ?? BorderRadius.circular(height),
       child: Center(
         child: Container(
           margin: margin,
+          padding: padding,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(height),
+            borderRadius: borderRadius ?? BorderRadius.circular(height),
             color: colors.barColor,
             boxShadow: barShadow,
           ),
@@ -120,14 +133,13 @@ class SegmentedButtonSlide extends StatelessWidget {
                 AnimatedPositioned(
                   duration: animationDuration,
                   curve: curve,
-                  left:
-                      (constraints.maxWidth / entries.length) * (selectedEntry),
+                  left: (constraints.maxWidth / entries.length) * (selectedEntry),
                   child: Container(
                     height: height,
                     width: constraints.maxWidth / entries.length,
                     decoration: BoxDecoration(
                       color: colors.backgroundSelectedColor,
-                      borderRadius: BorderRadius.circular(height),
+                      borderRadius: borderRadius ?? BorderRadius.circular(height),
                       boxShadow: slideShadow,
                     ),
                   ),
@@ -147,7 +159,9 @@ class SegmentedButtonSlide extends StatelessWidget {
                           animationDuration: animationDuration,
                           height: height,
                           curve: curve,
-                          fontSize: fontSize,
+                          borderRadius: borderRadius,
+                          selectedTextStyle: selectedTextStyle,
+                          unselectedTextStyle: unselectedTextStyle,
                           iconSize: iconSize,
                           textOverflow: textOverflow,
                         ),
@@ -172,7 +186,9 @@ class _ButtonEntry extends StatefulWidget {
   final Duration animationDuration;
   final Curve curve;
   final double height;
-  final double? fontSize;
+  final BorderRadiusGeometry? borderRadius;
+  final TextStyle? selectedTextStyle;
+  final TextStyle? unselectedTextStyle;
   final double? iconSize;
   final TextOverflow textOverflow;
 
@@ -185,7 +201,9 @@ class _ButtonEntry extends StatefulWidget {
     required this.animationDuration,
     required this.curve,
     required this.height,
-    required this.fontSize,
+    this.borderRadius,
+    required this.selectedTextStyle,
+    required this.unselectedTextStyle,
     required this.iconSize,
     required this.textOverflow,
   });
@@ -194,8 +212,7 @@ class _ButtonEntry extends StatefulWidget {
   State<_ButtonEntry> createState() => _ButtonEntryState();
 }
 
-class _ButtonEntryState extends State<_ButtonEntry>
-    with SingleTickerProviderStateMixin {
+class _ButtonEntryState extends State<_ButtonEntry> with SingleTickerProviderStateMixin {
   bool _hover = false;
 
   @override
@@ -204,9 +221,21 @@ class _ButtonEntryState extends State<_ButtonEntry>
       throw Exception("No icon or label specified.");
     }
 
+    TextStyle selectedTextStyle = widget.selectedTextStyle?.copyWith(color: widget.colors.foregroundSelectedColor) ??
+        TextStyle(
+          color: widget.colors.foregroundSelectedColor,
+          fontWeight: FontWeight.w600,
+        );
+
+    TextStyle unselectedTextStyle = widget.unselectedTextStyle?.copyWith(color: _hover ? widget.colors.hoverColor : widget.colors.foregroundUnselectedColor) ??
+        TextStyle(
+          color: _hover ? widget.colors.hoverColor : widget.colors.foregroundUnselectedColor,
+          fontWeight: FontWeight.w400,
+        );
+
     return Expanded(
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(widget.height),
+        borderRadius: widget.borderRadius ?? BorderRadius.circular(widget.height),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -232,23 +261,12 @@ class _ButtonEntryState extends State<_ButtonEntry>
                       duration: widget.animationDuration,
                       curve: widget.curve,
                     ),
-                  if (widget.entry.label != null && widget.entry.icon != null)
-                    const SizedBox(width: 12),
+                  if (widget.entry.label != null && widget.entry.icon != null) const SizedBox(width: 12),
                   if (widget.entry.label != null)
                     AnimatedDefaultTextStyle(
                       duration: widget.animationDuration,
                       curve: widget.curve,
-                      style: TextStyle(
-                        color: widget.isSelected
-                            ? widget.colors.foregroundSelectedColor
-                            : _hover
-                                ? widget.colors.hoverColor
-                                : widget.colors.foregroundUnselectedColor,
-                        fontWeight: widget.isSelected
-                            ? FontWeight.w600
-                            : FontWeight.w400,
-                        fontSize: widget.fontSize,
-                      ),
+                      style: widget.isSelected ? selectedTextStyle : unselectedTextStyle,
                       child: Flexible(
                         child: Text(
                           widget.entry.label!,
@@ -294,8 +312,7 @@ class _AnimatedIcon extends StatefulWidget {
   State<_AnimatedIcon> createState() => _AnimatedIconState();
 }
 
-class _AnimatedIconState extends State<_AnimatedIcon>
-    with TickerProviderStateMixin {
+class _AnimatedIconState extends State<_AnimatedIcon> with TickerProviderStateMixin {
   late AnimationController _activeController;
   late AnimationController _hoverController;
   late Animation<Color?> _activeAnimation;
