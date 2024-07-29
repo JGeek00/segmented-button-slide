@@ -22,21 +22,9 @@ class SegmentedButtonSlideColors {
   /// [backgroundSelectedColor] defines the background color of the item that's currently selected.
   final Color backgroundSelectedColor;
 
-  /// [foregroundSelectedColor] defines the color of the icon and text of the item that's currently selected.
-  final Color foregroundSelectedColor;
-
-  /// [foregroundUnselectedColor] defines the color of the icon and text of the items that aren't selected.
-  final Color foregroundUnselectedColor;
-
-  /// [hoverColor] defines the color of the icon and text when the mouse is over that entry.
-  final Color hoverColor;
-
   const SegmentedButtonSlideColors({
     required this.barColor,
     required this.backgroundSelectedColor,
-    required this.foregroundSelectedColor,
-    required this.foregroundUnselectedColor,
-    required this.hoverColor,
   });
 }
 
@@ -88,6 +76,9 @@ class SegmentedButtonSlide extends StatelessWidget {
   /// [unselectedTextStyle] sets the unselected text style of the text.
   final TextStyle? unselectedTextStyle;
 
+  /// [hoverTextStyle] sets the unselected text style of the text.
+  final TextStyle? hoverTextStyle;
+
   /// [iconSize] sets the size of the icon. It doesn't affect to the text.
   final double? iconSize;
 
@@ -110,6 +101,7 @@ class SegmentedButtonSlide extends StatelessWidget {
     this.borderRadius,
     this.selectedTextStyle,
     this.unselectedTextStyle,
+    this.hoverTextStyle,
     this.iconSize,
     this.textOverflow = TextOverflow.clip,
   });
@@ -133,13 +125,15 @@ class SegmentedButtonSlide extends StatelessWidget {
                 AnimatedPositioned(
                   duration: animationDuration,
                   curve: curve,
-                  left: (constraints.maxWidth / entries.length) * (selectedEntry),
+                  left:
+                      (constraints.maxWidth / entries.length) * (selectedEntry),
                   child: Container(
                     height: height,
                     width: constraints.maxWidth / entries.length,
                     decoration: BoxDecoration(
                       color: colors.backgroundSelectedColor,
-                      borderRadius: borderRadius ?? BorderRadius.circular(height),
+                      borderRadius:
+                          borderRadius ?? BorderRadius.circular(height),
                       boxShadow: slideShadow,
                     ),
                   ),
@@ -162,6 +156,7 @@ class SegmentedButtonSlide extends StatelessWidget {
                           borderRadius: borderRadius,
                           selectedTextStyle: selectedTextStyle,
                           unselectedTextStyle: unselectedTextStyle,
+                          hoverTextStyle: hoverTextStyle,
                           iconSize: iconSize,
                           textOverflow: textOverflow,
                         ),
@@ -189,6 +184,7 @@ class _ButtonEntry extends StatefulWidget {
   final BorderRadiusGeometry? borderRadius;
   final TextStyle? selectedTextStyle;
   final TextStyle? unselectedTextStyle;
+  final TextStyle? hoverTextStyle;
   final double? iconSize;
   final TextOverflow textOverflow;
 
@@ -204,6 +200,7 @@ class _ButtonEntry extends StatefulWidget {
     this.borderRadius,
     required this.selectedTextStyle,
     required this.unselectedTextStyle,
+    required this.hoverTextStyle,
     required this.iconSize,
     required this.textOverflow,
   });
@@ -212,7 +209,8 @@ class _ButtonEntry extends StatefulWidget {
   State<_ButtonEntry> createState() => _ButtonEntryState();
 }
 
-class _ButtonEntryState extends State<_ButtonEntry> with SingleTickerProviderStateMixin {
+class _ButtonEntryState extends State<_ButtonEntry>
+    with SingleTickerProviderStateMixin {
   bool _hover = false;
 
   @override
@@ -221,21 +219,35 @@ class _ButtonEntryState extends State<_ButtonEntry> with SingleTickerProviderSta
       throw Exception("No icon or label specified.");
     }
 
-    TextStyle selectedTextStyle = widget.selectedTextStyle?.copyWith(color: widget.colors.foregroundSelectedColor) ??
-        TextStyle(
-          color: widget.colors.foregroundSelectedColor,
-          fontWeight: FontWeight.w600,
-        );
+    final defaultSelectedColor = Theme.of(context).primaryColor;
+    final defaultSelectedTextStyle = TextStyle(
+      color: defaultSelectedColor,
+      fontWeight: FontWeight.w600,
+    );
 
-    TextStyle unselectedTextStyle = widget.unselectedTextStyle?.copyWith(color: _hover ? widget.colors.hoverColor : widget.colors.foregroundUnselectedColor) ??
-        TextStyle(
-          color: _hover ? widget.colors.hoverColor : widget.colors.foregroundUnselectedColor,
-          fontWeight: FontWeight.w400,
-        );
+    final defaultHoverColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    final defaultHoverTextStyle = TextStyle(
+      color: defaultHoverColor,
+      fontWeight: FontWeight.w400,
+    );
+
+    final defaultUnselectedColor = Theme.of(context).colorScheme.onSurface;
+    final defaultUnselectedTextStyle = TextStyle(
+      color: defaultUnselectedColor,
+      fontWeight: FontWeight.w400,
+    );
+
+    TextStyle selectedTextStyle =
+        widget.selectedTextStyle ?? defaultSelectedTextStyle;
+
+    TextStyle unselectedTextStyle = _hover
+        ? (widget.hoverTextStyle ?? defaultHoverTextStyle)
+        : (widget.unselectedTextStyle ?? defaultUnselectedTextStyle);
 
     return Expanded(
       child: ClipRRect(
-        borderRadius: widget.borderRadius ?? BorderRadius.circular(widget.height),
+        borderRadius:
+            widget.borderRadius ?? BorderRadius.circular(widget.height),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -252,21 +264,27 @@ class _ButtonEntryState extends State<_ButtonEntry> with SingleTickerProviderSta
                   if (widget.entry.icon != null)
                     _AnimatedIcon(
                       icon: widget.entry.icon!,
-                      activeColor: widget.colors.foregroundSelectedColor,
-                      normalColor: widget.colors.foregroundUnselectedColor,
-                      hoverColor: widget.colors.hoverColor,
+                      activeColor:
+                          selectedTextStyle.color ?? defaultSelectedColor,
+                      normalColor:
+                          unselectedTextStyle.color ?? defaultUnselectedColor,
+                      hoverColor:
+                          widget.hoverTextStyle?.color ?? defaultHoverColor,
                       isActive: widget.isSelected,
                       isHover: _hover,
                       size: widget.iconSize,
                       duration: widget.animationDuration,
                       curve: widget.curve,
                     ),
-                  if (widget.entry.label != null && widget.entry.icon != null) const SizedBox(width: 12),
+                  if (widget.entry.label != null && widget.entry.icon != null)
+                    const SizedBox(width: 12),
                   if (widget.entry.label != null)
                     AnimatedDefaultTextStyle(
                       duration: widget.animationDuration,
                       curve: widget.curve,
-                      style: widget.isSelected ? selectedTextStyle : unselectedTextStyle,
+                      style: widget.isSelected
+                          ? selectedTextStyle
+                          : unselectedTextStyle,
                       child: Flexible(
                         child: Text(
                           widget.entry.label!,
@@ -296,7 +314,6 @@ class _AnimatedIcon extends StatefulWidget {
   final Curve curve;
 
   const _AnimatedIcon({
-    Key? key,
     required this.icon,
     required this.activeColor,
     required this.normalColor,
@@ -306,13 +323,14 @@ class _AnimatedIcon extends StatefulWidget {
     this.size,
     required this.duration,
     required this.curve,
-  }) : super(key: key);
+  });
 
   @override
   State<_AnimatedIcon> createState() => _AnimatedIconState();
 }
 
-class _AnimatedIconState extends State<_AnimatedIcon> with TickerProviderStateMixin {
+class _AnimatedIconState extends State<_AnimatedIcon>
+    with TickerProviderStateMixin {
   late AnimationController _activeController;
   late AnimationController _hoverController;
   late Animation<Color?> _activeAnimation;

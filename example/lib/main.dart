@@ -48,11 +48,6 @@ class _SegmentedButtonDemoState extends State<SegmentedButtonDemo> {
                     .withOpacity(0.5),
                 backgroundSelectedColor:
                     Theme.of(context).colorScheme.primaryContainer,
-                foregroundSelectedColor:
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                foregroundUnselectedColor:
-                    Theme.of(context).colorScheme.onSurface,
-                hoverColor: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
               slideShadow: [
                 BoxShadow(
@@ -63,6 +58,19 @@ class _SegmentedButtonDemoState extends State<SegmentedButtonDemo> {
               ],
               margin: const EdgeInsets.all(16),
               height: 70,
+              padding: const EdgeInsets.all(16),
+              borderRadius: BorderRadius.circular(8),
+              selectedTextStyle: const TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Colors.green,
+              ),
+              unselectedTextStyle: const TextStyle(
+                fontWeight: FontWeight.w400,
+                color: Colors.red,
+              ),
+              hoverTextStyle: const TextStyle(
+                color: Colors.orange,
+              ),
             ),
           )),
         ));
