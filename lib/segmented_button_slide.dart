@@ -70,13 +70,13 @@ class SegmentedButtonSlide extends StatelessWidget {
   /// [height] defines the height of the widget.
   final double height;
 
-  /// [selectedTextStyle] sets the selected text style of the text.
+  /// [selectedTextStyle] sets the styles of the text and the icon when an option is selected.
   final TextStyle? selectedTextStyle;
 
-  /// [unselectedTextStyle] sets the unselected text style of the text.
+  /// [unselectedTextStyle] sets the styles of the text and the icon when an option is not selected.
   final TextStyle? unselectedTextStyle;
 
-  /// [hoverTextStyle] sets the unselected text style of the text.
+  /// [hoverTextStyle] sets the styles of the text and the icon when an option is hovered.
   final TextStyle? hoverTextStyle;
 
   /// [iconSize] sets the size of the icon. It doesn't affect to the text.

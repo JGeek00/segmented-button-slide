@@ -23,30 +23,49 @@ int selectedOption = 0;
 ...
 
 SegmentedButtonSlide(
-  entries: const [
-    SegmentedButtonSlideEntry(icon: Icons.home_rounded, label: "Home"),
-    SegmentedButtonSlideEntry(icon: Icons.list_rounded, label: "List"),
-    SegmentedButtonSlideEntry(icon: Icons.settings_rounded, label: "Settings"),
-  ], 
-  selectedEntry: selectedOption, 
+  selectedEntry: selectedOption,
   onChange: (selected) => setState(() => selectedOption = selected),
+  entries: const [
+    SegmentedButtonSlideEntry(
+      icon: Icons.home_rounded,
+      label: "Home",
+    ),
+    SegmentedButtonSlideEntry(
+      icon: Icons.list_rounded,
+      label: "List",
+    ),
+    SegmentedButtonSlideEntry(
+      icon: Icons.settings_rounded,
+      label: "Settings",
+    ),
+  ],
   colors: SegmentedButtonSlideColors(
-    barColor: Colors.grey.withOpacity(0.2),
-    backgroundSelectedColor: Colors.grey, 
-    foregroundSelectedColor: Colors.white, 
-    foregroundUnselectedColor: Colors.black, 
-    hoverColor: Colors.grey.withOpacity(0.8)
+    barColor: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5),
+    backgroundSelectedColor: Theme.of(context).colorScheme.primaryContainer,
   ),
   slideShadow: [
     BoxShadow(
-      color: Colors.grey,
+      color: Colors.blue.withOpacity(1),
       blurRadius: 5,
-      spreadRadius: 1
+      spreadRadius: 1,
     )
   ],
   margin: const EdgeInsets.all(16),
   height: 70,
-)
+  padding: const EdgeInsets.all(16),
+  borderRadius: BorderRadius.circular(8),
+  selectedTextStyle: const TextStyle(
+    fontWeight: FontWeight.w700,
+    color: Colors.green,
+  ),
+  unselectedTextStyle: const TextStyle(
+    fontWeight: FontWeight.w400,
+    color: Colors.red,
+  ),
+  hoverTextStyle: const TextStyle(
+    color: Colors.orange,
+  ),
+),
 ```
 
 #### Detailed explanation
@@ -56,9 +75,6 @@ SegmentedButtonSlide(
 * **[REQUIRED] ``colors``** accepts an instance of ``SegmentedButtonSlideColors``. All of it's attributes are mandatory. 
   * ``barColor`` defines the background color of the full bar.
   * ``backgroundSelectedColor`` defines the background color of the item that's currently selected.
-  * ``foregroundSelectedColor`` defines the color of the icon and text of the item that's currently selected.
-  * ``foregroundUnselectedColor`` defines the color of the icon and text of the items that aren't selected.
-  * ``hoverColor`` defines the color of the icon and text when the mouse is over that entry.
 * **``slideShadow``** defines the boxShadow of the slider (item that's currently selected).
 * **``barShadow``** defines the boxShadow of the full bar (the background).
 * **``margin``** creates a margin around the whole widget.
@@ -68,3 +84,13 @@ SegmentedButtonSlide(
 * **``textOverflow``** defines how the text (only) should overflow.
 * **``animationDuration``** defines the duration of all the animations of the widget. By default it's set to 250 milliseconds.
 * **``curve``** defines the curve of all the animations of the widget. By default it's set to ``ease``.
+* **``padding``** defines the distance between the selectable items and the outer container.
+* **``borderRadius``** defines the border radius for the outer container and for the individual items.
+* **``selectedTextStyle``** accepts a ``TextStyle`` object that defines the style for the icon and the text when the option is selected.
+* **``unselectedTextStyle``** accepts a ``TextStyle`` object that defines the style for the icon and the text when the option is not selected.
+* **``hoverTextStyle``** accepts a ``TextStyle`` object that defines the style for the icon and the text when the option is hovered.
+
+#### Migration from v1 to v2
+Segmented button slide v2 includes some breaking changes.
+* ``foregroundSelectedColor``, ``foregroundUnselectedColor`` and ``hoverColor`` have been removed.
+* Now you can define that three colors with the ``selectedTextStyle``, ``unselectedTextStyle`` and ``hoverTextStyle`` attributes.
